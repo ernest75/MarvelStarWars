@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">MarvelStarWars</string>
+    <string name="name">Name : </string>
+    <string name="universe">Universe :</string>
+    <string name="download_completed">Download completed</string>
+</resources>
