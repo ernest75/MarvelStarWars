@@ -18,6 +18,6 @@ Thnks,
 
 Ernest,
 
-## V2
+## Version 2
 
 For the second version I improved a bit the design using gradients and did testing.
