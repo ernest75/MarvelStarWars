@@ -17,3 +17,7 @@ Any comments or feedback will be very much welcome,
 Thnks,
 
 Ernest,
+
+## V2
+
+For the second version I improved a bit the design using gradients and did testing.
