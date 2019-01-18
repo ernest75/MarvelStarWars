@@ -1,5 +1,8 @@
 package com.example.ernestschneiderolcina.marvelstarwars.screens.main;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.example.ernestschneiderolcina.marvelstarwars.networking.retrofitservices.DogApiService;
 import com.example.ernestschneiderolcina.marvelstarwars.networking.retrofitservices.MarvelApiService;
 import com.example.ernestschneiderolcina.marvelstarwars.networking.retrofitservices.StarWarsApiService;
@@ -8,14 +11,29 @@ import com.example.ernestschneiderolcina.marvelstarwars.networking.apismodels.St
 import com.example.ernestschneiderolcina.marvelstarwars.networking.apismodels.StarWarsCharacter;
 import com.example.ernestschneiderolcina.marvelstarwars.repo.CharacterRepo;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 
+import javax.inject.Inject;
+
+import io.reactivex.Completable;
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.observers.DisposableCompletableObserver;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivityModel implements MainMVP.Model {
+
+    private static final String LOG_TAG = MainActivityModel.class.getSimpleName();
 
     StarWarsApiService mStarWarsApiService;
 
@@ -23,20 +41,20 @@ public class MainActivityModel implements MainMVP.Model {
 
     DogApiService mDogApiService;
 
-    public MainActivityModel(StarWarsApiService starWarsApiService, MarvelApiService marvelApiService, DogApiService dogApiService) {
+
+    public MainActivityModel(StarWarsApiService starWarsApiService,
+                             MarvelApiService marvelApiService,
+                             DogApiService dogApiService) {
         this.mStarWarsApiService = starWarsApiService;
         this.mMarvelPaiService = marvelApiService;
         this.mDogApiService = dogApiService;
-    }
 
-    @Override
-    public CharacterRepo getCharacter() {
-        return null;
     }
 
 
     @Override
     public Observable<CharacterRepo> getInfoFromStarWarsApi() {
+
         Observable<CharacterRepo> starWarsCharacterObservable = mStarWarsApiService.getStarWarsCharacters("json")
                 .concatMap(new Function<StarWarsApi, Observable<CharacterRepo>>() {
                     @Override
@@ -60,9 +78,10 @@ public class MainActivityModel implements MainMVP.Model {
     }
 
 
+
     //helper methods
 
-    private List<CharacterRepo> transformDogApiToCharacterRepo(List<String> listToTransform){
+    public List<CharacterRepo> transformDogApiToCharacterRepo(List<String> listToTransform){
         ArrayList<CharacterRepo> characterRepoArrayList = new ArrayList<>();
         int f = 1;
         for(String s : listToTransform){
@@ -73,7 +92,7 @@ public class MainActivityModel implements MainMVP.Model {
         return characterRepoArrayList;
     }
 
-    private List<CharacterRepo> transformStarWarApiToCharacterRepo(List<StarWarsCharacter> listToTransform){
+    public List<CharacterRepo> transformStarWarApiToCharacterRepo(List<StarWarsCharacter> listToTransform){
         ArrayList<CharacterRepo> characterRepoArrayList = new ArrayList<>();
         for (StarWarsCharacter sTc : listToTransform){
             CharacterRepo characterRepo = new CharacterRepo(sTc.getName(),"StarWars","");
@@ -84,7 +103,7 @@ public class MainActivityModel implements MainMVP.Model {
 
     //create random char
 
-    public static String randomChar() {
+    private String randomChar() {
         Random generator = new Random();
         StringBuilder randomStringBuilder = new StringBuilder();
         char[] tempChar = {'e','m','z'};
@@ -94,6 +113,8 @@ public class MainActivityModel implements MainMVP.Model {
         }
         return randomStringBuilder.toString();
     }
+
+
 
 
 }

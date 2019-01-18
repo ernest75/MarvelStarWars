@@ -16,6 +16,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.ernestschneiderolcina.marvelstarwars.R;
 import com.example.ernestschneiderolcina.marvelstarwars.repo.CharacterRepo;
+import com.example.ernestschneiderolcina.marvelstarwars.screens.detail.DetailActivity;
 import com.example.ernestschneiderolcina.marvelstarwars.screens.main.MainMVP;
 
 import java.util.List;
@@ -64,7 +65,8 @@ public class CharacterListAdapter extends RecyclerView.Adapter<CharacterListAdap
         viewHolder.setItemClickListener(new ItemClickListener() {
             @Override
             public void onClick(View view, int position, boolean isLongClick) {
-                mPresenter.onCharacterClicked(characterRepo, new Intent());
+                Intent intent = new Intent(mContext,DetailActivity.class);
+                mPresenter.onCharacterClicked(characterRepo,intent);
 
             }
         });

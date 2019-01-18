@@ -39,7 +39,7 @@ public class ApplicationModule {
     }
 
     @Provides
-    MainMVP.Presenter provideMainPresenter(StarWarsApiService starWarsApiService, MarvelApiService marvelApiService,DogApiService dogApiService){
+    MainMVP.Presenter provideMainPresenter(StarWarsApiService starWarsApiService, MarvelApiService marvelApiService, DogApiService dogApiService){
         return new MainActivityPresenter(provideContext(),provideModel(starWarsApiService,marvelApiService,dogApiService));
     }
 
@@ -52,6 +52,7 @@ public class ApplicationModule {
     DetailMVP.Presenter provideDetailPresenter(){
         return new DetailPresenter(provideDetailModel());
     }
+
 
 
 

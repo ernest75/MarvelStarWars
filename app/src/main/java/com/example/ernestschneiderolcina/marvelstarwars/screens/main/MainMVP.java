@@ -13,11 +13,10 @@ public interface MainMVP {
 
     interface Model {
 
-        CharacterRepo getCharacter();
-
         Observable<CharacterRepo> getInfoFromStarWarsApi();
 
         Observable<CharacterRepo> getInfoFromDogApi();
+
     }
 
     interface Presenter {

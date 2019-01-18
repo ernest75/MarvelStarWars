@@ -1,5 +1,7 @@
 package com.example.ernestschneiderolcina.marvelstarwars.dagger;
 
+import android.arch.persistence.room.RoomDatabase;
+
 import com.example.ernestschneiderolcina.marvelstarwars.screens.detail.DetailActivity;
 import com.example.ernestschneiderolcina.marvelstarwars.screens.main.MainActivity;
 

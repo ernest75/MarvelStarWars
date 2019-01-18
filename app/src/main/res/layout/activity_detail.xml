@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screens.detail.DetailActivity">
+    tools:context=".screens.detail.DetailActivity"
+    android:background="@drawable/gradient_detail">
 
     <ImageView
         android:id="@+id/imageView"

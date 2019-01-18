@@ -3,29 +3,33 @@ package com.example.ernestschneiderolcina.marvelstarwars.screens.main;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.ernestschneiderolcina.marvelstarwars.R;
 import com.example.ernestschneiderolcina.marvelstarwars.constants.Constants;
-import com.example.ernestschneiderolcina.marvelstarwars.networking.apismodels.StarWarsCharacter;
 import com.example.ernestschneiderolcina.marvelstarwars.repo.CharacterRepo;
-import com.example.ernestschneiderolcina.marvelstarwars.screens.detail.DetailActivity;
+
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Observable;
 
-import io.reactivex.Scheduler;
+import javax.inject.Inject;
+
+import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
+import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainActivityPresenter implements MainMVP.Presenter {
 
-    MainMVP.View mView;
+    public MainMVP.View mView;
 
     MainMVP.Model mModel;
 
@@ -33,13 +37,15 @@ public class MainActivityPresenter implements MainMVP.Presenter {
 
     List<CharacterRepo> mCharacterRepoList= new ArrayList<>();
 
-    private Disposable mSubscription = null;
+    public Disposable mSubscription = null;
+
     private String LOG_TAG = MainActivityPresenter.class.getSimpleName();
 
 
     public MainActivityPresenter(Context context, MainMVP.Model model) {
         this.mContext = context;
         this.mModel = model;
+
         }
 
     @Override
@@ -48,8 +54,7 @@ public class MainActivityPresenter implements MainMVP.Presenter {
     }
 
     @Override
-    public void onCharacterClicked(CharacterRepo character, Intent intent) {
-        intent = new Intent(mContext,DetailActivity.class);
+    public void onCharacterClicked(CharacterRepo character,Intent intent) {
         intent.putExtra(Constants.CHARACTER_NAME, character.name);
         intent.putExtra(Constants.CHARACTER_UNIVERSE,character.universe);
         intent.putExtra(Constants.CHARACTER_URL,character.pictureUrl);
@@ -60,6 +65,7 @@ public class MainActivityPresenter implements MainMVP.Presenter {
     @Override
     public void loadData() {
         mCharacterRepoList.clear();
+
         mSubscription = io.reactivex.Observable.merge(mModel.getInfoFromStarWarsApi(),mModel.getInfoFromDogApi())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -67,25 +73,23 @@ public class MainActivityPresenter implements MainMVP.Presenter {
                     @Override
                     public void onNext(CharacterRepo characterRepo) {
                         mCharacterRepoList.add(characterRepo);
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         mView.showErrorFromNetwork(e.getMessage());
-                    ;
                     }
 
                     @Override
                     public void onComplete() {
-                       mCharacterRepoList = orderAlphabetically(mCharacterRepoList);
-                       mView.showData(mCharacterRepoList);
-                       mView.showMessage(mContext.getString(R.string.download_completed));
-                       mView.hideProgressbar();
-                       for(CharacterRepo characterRepo : mCharacterRepoList){
-                           Log.e(LOG_TAG, characterRepo.name);
-                       }
+                        mCharacterRepoList = orderAlphabetically(mCharacterRepoList);
+                        mView.showData(mCharacterRepoList);
+                        mView.showMessage(mContext.getString(R.string.download_completed));
+                        mView.hideProgressbar();
                     }
-                });
+                }
+               );
 
     }
 
@@ -99,7 +103,7 @@ public class MainActivityPresenter implements MainMVP.Presenter {
 
     //helper methods
 
-    private List<CharacterRepo> orderAlphabetically(List<CharacterRepo> characterRepoList) {
+    public List<CharacterRepo> orderAlphabetically(List<CharacterRepo> characterRepoList) {
         ArrayList<String> characterRepoName = new ArrayList<>();
         for(CharacterRepo characterRepo : characterRepoList){
             characterRepoName.add(characterRepo.name);

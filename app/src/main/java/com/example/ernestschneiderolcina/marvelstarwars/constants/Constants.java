@@ -19,4 +19,14 @@ public class Constants {
             "\"vehicles\":[\"https://swapi.co/api/vehicles/14/\",\"https://swapi.co/api/vehicles/30/\"],\"starships\":[\"https://swapi.co/api/starships/12/\"," +
             "\"https://swapi.co/api/starships/22/\"],\"created\":\"2014-12-09T13:50:51.644000Z\",\"edited\":\"2014-12-20T21:17:56.891000Z\",\"url\":\"https://swapi.co/api/people/1/\"}]}";
 
+    public static final String BAD_JSON_RESPONSE_FROM_SERVER = "\n" +
+            "{\n" +
+            "  \"error\": {\n" +
+            "    \"code\": 404,\n" +
+            "    \"message\": \"Quote Not found\"\n" +
+            "  }\n" +
+            "}";
+
+
+
 }
